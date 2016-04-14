@@ -4,15 +4,16 @@ import Confirmation from 'ember-validations/validators/local/confirmation';
 import Mixin from 'ember-validations/mixin';
 import buildContainer from '../../../helpers/build-container';
 
-var model, Model, options, validator;
+var model, Model, options, validator, container;
 var get = Ember.get;
 var set = Ember.set;
 var run = Ember.run;
 
 module('Confirmation Validator', {
   setup: function() {
+    container = buildContainer();
     Model = Ember.Object.extend(Mixin, {
-      container: buildContainer()
+      container: container
     });
     run(function() {
       model = Model.create();
@@ -23,7 +24,7 @@ module('Confirmation Validator', {
 test('when values match', function(assert) {
   options = { message: 'failed validation' };
   run(function() {
-    validator = Confirmation.create({model: model, property: 'attribute', options: options});
+    validator = Confirmation.create({model: model, property: 'attribute', options: options, container: container});
     set(model, 'attribute', 'test');
     set(model, 'attributeConfirmation', 'test');
   });
@@ -41,7 +42,7 @@ test('when values match', function(assert) {
 test('when values do not match', function(assert) {
   options = { message: 'failed validation' };
   run(function() {
-    validator = Confirmation.create({model: model, property: 'attribute', options: options});
+    validator = Confirmation.create({model: model, property: 'attribute', options: options, container: container});
     set(model, 'attribute', 'test');
   });
   assert.deepEqual(validator.errors, ['failed validation']);
@@ -66,7 +67,7 @@ test('when confirmation is null', function(assert) {
 test('when options is true', function(assert) {
   options = true;
   run(function() {
-    validator = Confirmation.create({model: model, property: 'attribute', options: options});
+    validator = Confirmation.create({model: model, property: 'attribute', options: options, container: container});
     set(model, 'attribute', 'test');
   });
   assert.deepEqual(validator.errors, ["doesn't match attribute"]);

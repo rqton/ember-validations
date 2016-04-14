@@ -4,6 +4,8 @@ var get = Ember.get;
 var set = Ember.set;
 
 export default Ember.Object.extend({
+  validations: Ember.inject.service('validations'),
+
   init: function() {
     set(this, 'errors', Ember.A());
     this.dependentValidationKeys = Ember.A();
@@ -106,5 +108,8 @@ export default Ember.Object.extend({
       case '<':   return a < b;
       default:    return false;
     }
+  },
+  getMessage: function(attribute, context) {
+    return get(this, 'validations.messages').render(attribute, context);
   }
 });
