@@ -44,17 +44,17 @@ var lookupValidator = function(validatorName) {
   if (cache[validatorName]) {
     validators = validators.concat(cache[validatorName]);
   } else {
-    var local = owner._lookupFactory('validator:local/'+validatorName);
-    var remote = owner._lookupFactory('validator:remote/'+validatorName);
+    var local = owner.factoryFor('validator:local/'+validatorName);
+    var remote = owner.factoryFor('validator:remote/'+validatorName);
 
     if (local || remote) { validators = validators.concat([local, remote]); }
     else {
-      var base = owner._lookupFactory('validator:'+validatorName);
+      var base = owner.factoryFor('validator:'+validatorName);
 
       if (base) { validators = validators.concat([base]); }
       else {
-        local = owner._lookupFactory('ember-validations@validator:local/'+validatorName);
-        remote = owner._lookupFactory('ember-validations@validator:remote/'+validatorName);
+        local = owner.factoryFor('ember-validations@validator:local/'+validatorName);
+        remote = owner.factoryFor('ember-validations@validator:remote/'+validatorName);
 
         if (local || remote) { validators = validators.concat([local, remote]); }
       }
